@@ -1,2 +1,2 @@
 # spring-jopt-cli-example
-Example CLI application using JOpt Simple.
+Example Spring Boot CLI application using JOpt Simple (JOptCommandLinePropertySource from Spring Framework).
