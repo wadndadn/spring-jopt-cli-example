@@ -17,25 +17,44 @@
 package de.wadndadn.springjoptcli.example;
 
 import joptsimple.OptionParser;
-import joptsimple.OptionSet;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.JOptCommandLinePropertySource;
 import org.springframework.core.env.PropertySource;
 
+@Slf4j
 @SpringBootApplication
 public class SpringJoptCliExampleApplication {
 
-    public static void main(String[] args) {
-        JOptCommandLinePropertySource soclps;
+    public static void main(final String[] args) {
+        final PropertySource<?> propertySource = createPropertySource(args);
 
-        OptionParser op = new OptionParser();
-        op.accepts("option1");
-        op.accepts("option2").withRequiredArg();
-        OptionSet os = op.parse(args);
-
-        PropertySource<?> ps = new JOptCommandLinePropertySource(os);
+        if (log.isInfoEnabled()) {
+            log.info("Name: '{}'", propertySource.getName());
+            log.info("Source: '{}'", propertySource.getSource());
+        }
 
         SpringApplication.run(SpringJoptCliExampleApplication.class, args);
+    }
+
+    private static PropertySource<?> createPropertySource(final String[] args) {
+        if (log.isInfoEnabled()) {
+            log.info("Create property source for command line arguments: '{}'", (Object) args);
+        }
+
+        final var optionParser = new OptionParser();
+        optionParser.accepts("o1").withRequiredArg();
+        optionParser.accepts("o2");
+
+        final var optionSet = optionParser.parse(args);
+
+        final PropertySource<?> propertySource = new JOptCommandLinePropertySource(optionSet);
+
+        if (log.isInfoEnabled()) {
+            log.info("Created property source: '{}'", propertySource);
+        }
+
+        return propertySource;
     }
 }
