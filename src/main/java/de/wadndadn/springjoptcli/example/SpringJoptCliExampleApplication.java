@@ -28,6 +28,12 @@ import org.springframework.core.env.PropertySource;
 public class SpringJoptCliExampleApplication {
 
     public static void main(final String[] args) {
+        if (log.isTraceEnabled()) {
+            for (int i=0; i < args.length; i++) {
+                log.trace("Args[{}]: '{}'", i, args[i]);
+            }
+        }
+
         final PropertySource<?> propertySource = createPropertySource(args);
 
         if (log.isInfoEnabled()) {
@@ -39,8 +45,8 @@ public class SpringJoptCliExampleApplication {
     }
 
     private static PropertySource<?> createPropertySource(final String[] args) {
-        if (log.isInfoEnabled()) {
-            log.info("Create property source for command line arguments: '{}'", (Object) args);
+        if (log.isDebugEnabled()) {
+            log.debug("Create property source for command line arguments: '{}'", (Object) args);
         }
 
         final var optionParser = new OptionParser();
@@ -51,8 +57,8 @@ public class SpringJoptCliExampleApplication {
 
         final PropertySource<?> propertySource = new JOptCommandLinePropertySource(optionSet);
 
-        if (log.isInfoEnabled()) {
-            log.info("Created property source: '{}'", propertySource);
+        if (log.isDebugEnabled()) {
+            log.debug("Created property source: '{}'", propertySource);
         }
 
         return propertySource;
